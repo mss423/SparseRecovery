@@ -82,8 +82,8 @@ def eval_support(model_dict, m_train=400, num_feature=9, n=2000, repeat=1):
                 f_imp = clf.feature_importances_
             indexes = np.argsort(-f_imp)
             correct_count = len(set.intersection(set(support), set(indexes[:r])))
-            # if name == 'XGB':
-            #     print(correct_count)
+            if name == 'XGB':
+                print(correct_count)
             ans.setdefault(name, []).append(correct_count)
     for name, val in ans.items():
         ans[name] = np.mean(val)
@@ -104,20 +104,18 @@ def plot_support():
 
     for p in num_features:
         print()
-        # m_trains = np.linspace(50, 500, 10, dtype=int)
         m_trains = np.linspace(50, 1000, 10, dtype=int)
-        # m_trains = [50]
         ans_total = dict()
         for m in m_trains:
             ans_now = eval_support(model_dict, m_train=m, num_feature=p, repeat=4)
             for name, val in ans_now.items():
                 ans_total.setdefault(name, []).append(val)
         for name, y in ans_total.items():
-            plt.plot(m_trains, y, label=name)#, marker='*')
+            plt.plot(m_trains, y, label=name)
         plt.legend()
         plt.ylabel('Recovery Count')
         plt.xlabel('Training Samples')
-        plt.savefig(f'/Users/maxspringer/PycharmProjects/support_p={p}.pdf')
+        plt.savefig(f'/.../support_p={p}.pdf')
         plt.clf()
 
 def eval_m_n(model_dict, m_train=400, num_feature=9, n=500, repeat=1):
@@ -155,8 +153,7 @@ def plot_m_n():
     num_features = [10, 20, 30, 50, 100]
 
     for p in num_features:
-        m_trains = np.linspace(50, 500, 10, dtype=int)
-        # m_trains = [50]
+        m_trains = np.linspace(50, 1000, 10, dtype=int)
         ans_total = dict()
         for m in m_trains:
             ans_now = eval_m_n(model_dict, m_train=m, num_feature=p, repeat=10)
@@ -264,9 +261,7 @@ def generate(args):
             args.m_test,
             args.num_feature,
             args.n,
-            #args.sd,
             args.seed,
-            #args.verbose,
             args.path
             )
 
@@ -278,7 +273,7 @@ def eval_data(args):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("cmd", type=str)#, default='generate')
+    parser.add_argument("cmd", type=str, default='generate')
     parser.add_argument("--m_train", type=int, default=400)
     parser.add_argument("--m_test", type=int, default=100)
     parser.add_argument("--num_feature", type=int, default=9)
