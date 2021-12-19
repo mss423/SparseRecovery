@@ -100,8 +100,7 @@ def plot_support():
             'DecisionStump': partial(DecisionTreeClassifier, max_depth=1),
             'Lasso': partial(LogisticRegression, C=2, penalty='l1', solver='liblinear'),
             }
-    num_features = [10]#, 20, 30, 50, 100]
-    # num_features = [10]
+    num_features = [10, 20, 30, 50, 100]
 
     for p in num_features:
         print()
@@ -153,8 +152,7 @@ def plot_m_n():
             'svm': svm.LinearSVC,
             'GradientBoostingClassifier': GradientBoostingClassifier,
             }
-    num_features = [20, 30, 50, 100]
-    # num_features = [10]
+    num_features = [10, 20, 30, 50, 100]
 
     for p in num_features:
         m_trains = np.linspace(50, 500, 10, dtype=int)
@@ -191,7 +189,6 @@ def eval_xgboost(data):
             X_train = X_train[:, support]
             X_test = X_test[:, support]
         
-        # clf.fit(X_train, y_train, eval_metric='logloss')
         clf.fit(X_train, y_train)
         if hasattr(clf, 'feature_importances_'):
             f_imp = clf.feature_importances_
@@ -200,9 +197,6 @@ def eval_xgboost(data):
             print(sorted(indexes[:r]))
             print(sorted(support))
             print('---', len(set.intersection(set(support), set(indexes[:r]))))
-        # num = f_imp[indexes][:r]
-        # num = f_imp[indexes][11:15]
-        # print(num)
 
         def err_func(y, yp):
             return (y != yp).mean()
